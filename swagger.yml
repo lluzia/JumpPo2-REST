@@ -1,0 +1,389 @@
+openapi: 3.0.0
+info:
+  title: "JumpPo 2"
+  description: "APIs de suporte `a aplicação JumpPo"
+  version: "1.0.0"
+
+servers:
+  - url: "/api"
+
+components:
+  schemas:
+    Usuario:
+      type: "object"
+      required:
+        - email
+      properties:
+        nome:
+          type: "string"
+        sobrenome:
+          type: "string"
+        email:
+          type: "string"
+        senha:
+          type: "string"
+  parameters:
+    email:
+      name: "email"
+      description: "E-mail do usúario"
+      in: path
+      required: True
+      schema:
+        type: "string"
+    avaliado_id:
+      name: "avaliado_id"
+      description: "ID do avaliado"
+      in: path
+      required: True
+      schema:
+        type: "integer"
+    salto_id:
+      name: "salto_id"
+      description: "ID do salto"
+      in: path
+      required: True
+      schema:
+        type: "integer"
+    usuario_atual:
+      name: "usuario_atual"
+      description: "ID do Usuario/Treinador relacionado ao avaliado"
+      in: path
+      required: True
+      schema:
+        type: "integer"
+    avaliado_atual:
+      name: "avaliado_atual"
+      description: "ID da avaliado"
+      in: path
+      required: True
+      schema:
+        type: "integer"
+    nome:
+      name: "nome"
+      description: "nome"
+      in: path
+      required: True
+      schema:
+        type: "string"
+    sobrenome:
+      name: "sobrenome"
+      description: "sobrenome"
+      in: path
+      required: True
+      schema:
+        type: "string"
+    sexo:
+      name: "sexo"
+      description: "sexo"
+      in: path
+      required: True
+      schema:
+        type: "string"
+    peso:
+      name: "peso"
+      description: "peso"
+      in: path
+      required: True
+      schema:
+        type: "number"
+    perna_flexionada:
+      name: "perna_flexionada"
+      description: "perna_flexiona"
+      in: path
+      required: True
+      schema:
+        type: "number"
+    perna_estendida:
+      name: "perna_estendida"
+      description: "perna_estendida"
+      in: path
+      required: True
+      schema:
+        type: "number"
+    altura_salto:
+      name: "altura_salto"
+      description: "altura_salto"
+      in: path
+      required: True
+      schema:
+        type: "number"
+    tempo_voo:
+      name: "tempo_voo"
+      description: "tempo de vôo"
+      in: path
+      required: True
+      schema:
+        type: "number"
+    forca_media:
+      name: "forca_media"
+      description: "força média"
+      in: path
+      required: True
+      schema:
+        type: "number"
+    potencia_media:
+      name: "potencia_media"
+      description: "potência média"
+      in: path
+      required: True
+      schema:
+        type: "number"
+    veloc_media:
+      name: "veloc_media"
+      description: "velocidade média"
+      in: path
+      required: True
+      schema:
+        type: "number"
+    ativo:
+      name: "ativo"
+      description: "ativo"
+      in: path
+      required: True
+      schema:
+        type: "boolean"
+paths:
+  /usuarios:
+    get:
+      operationId: "usuarios.read_all"
+      tags:
+        - "Usuarios"
+      summary: "Lista de usuários"
+      responses:
+        "200":
+          description: "Lista de usuário lida com sucesso"
+    post:
+      operationId: "usuarios.create"
+      tags:
+        - Usuarios
+      summary: "Criar usuário"
+      requestBody:
+          description: "Criar Usuário"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "usuario"
+                $ref: "#/components/schemas/Usuario"
+      responses:
+        "201":
+          description: "Usuário criado com sucesso"
+  /usuarios/{email}:
+    get:
+      operationId: "usuarios.read_one"
+      tags:
+        - Usuario
+      summary: "Listar um usuário"
+      parameters:
+        - $ref: "#/components/parameters/email"
+      responses:
+        "200":
+          description: "Um usuário listado com sucesso"
+    put:
+      tags:
+        - Usuarios
+      operationId: "usuarios.update"
+      summary: "Atualizar usuarios"
+      parameters:
+        - $ref: "#/components/parameters/email"
+      responses:
+        "200":
+          description: "Usuário atualizado com sucesso"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              x-body-name: "usuario"
+              $ref: "#/components/schemas/Usuario"
+    delete:
+      tags:
+        - Usuarios
+      operationId: "usuarios.delete"
+      summary: "Excluir usuário"
+      parameters:
+        - $ref: "#/components/parameters/email"
+      responses:
+        "204":
+          description: "Usuário excluído com sucesso"
+  /avaliados:
+    get:
+      operationId: "avaliados.read_all"
+      tags:
+        - "Avaliados"
+      summary: "Lista de Avaliados"
+      responses:
+        "200":
+          description: "Lista de avaliados lida com sucesso"
+  /avaliados/{usuario_atual}:
+    post:
+      operationId: "avaliados.create"
+      tags:
+        - Avaliados
+      summary: "Criar um avaliado associado ao treinador"
+      parameters:
+        - $ref: "#/components/parameters/usuario_atual"
+      requestBody:
+        description: "Criar Avaliado"
+        required: True
+        content:
+          application/json:
+            schema:
+              x-body-name: "avaliado"
+              type: "object"
+              properties:
+                nome:
+                  type: "string"
+                sobrenome:
+                  type: "string"
+                sexo:
+                  type: "string"
+                peso:
+                  type: "number"
+                perna_flexionada:
+                  type: "number"
+                perna_estendida:
+                  type: "number"
+      responses:
+        "201":
+          description: "Avaliado criado com sucesso"
+  /avaliados/{avaliado_id}:
+    get:
+      operationId: "avaliados.read_one"
+      tags:
+        - Avaliados
+      summary: "Lista um avaliado"
+      parameters:
+        - $ref: "#/components/parameters/avaliado_id"
+      responses:
+        "200":
+          description: "Um avaliado listado com sucesso"
+    put:
+      tags:
+        - Avaliados
+      operationId: "avaliados.update"
+      summary: "Atualiza avaliados"
+      parameters:
+        - $ref: "#/components/parameters/avaliado_id"
+      responses:
+        "200":
+          description: "Avaliado atualizado com sucesso"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              x-body-name: "avaliado"
+              type: "object"
+              properties:
+                nome:
+                  type: "string"
+                sobrenome:
+                  type: "string"
+                sexo:
+                  type: "string"
+                peso:
+                  type: "number"
+                perna_flexionada:
+                  type: "number"
+                perna_estendida:
+                  type: "number"
+    delete:
+      tags:
+        - Avaliados
+      operationId: "avaliados.delete"
+      summary: "Excluir avaliado"
+      parameters:
+        - $ref: "#/components/parameters/avaliado_id"
+      responses:
+        "204":
+          description: "Avaliado excluído com sucesso"
+  /saltos:
+    get:
+      operationId: "saltos.read_all"
+      tags:
+        - "Saltos"
+      summary: "Lista de Saltos"
+      responses:
+        "200":
+          description: "Lista de saltos lida com sucesso"
+  /saltos/{avaliado_atual}:
+    post:
+      operationId: "saltos.create"
+      tags:
+        - Saltos
+      summary: "Criar Salto associado a um avaliado"
+      parameters:
+        - $ref: "#/components/parameters/avaliado_atual"
+      requestBody:
+        description: "Criar salto"
+        required: True
+        content:
+          application/json:
+            schema:
+              x-body-name: "salto"
+              properties:
+                altura_salto:
+                  type: "number"
+                tempo_voo:
+                  type: "number"
+                forca_media:
+                  type: "number"
+                potencia_media:
+                  type: "number"
+                veloc_media:
+                  type: "number"
+                ativo:
+                  type: "boolean"
+      responses:
+        "201":
+          description: "Salto criado com sucesso"
+
+  /saltos/{salto_id}:
+    get:
+      operationId: "saltos.read_one"
+      tags:
+        - Saltos
+      summary: "Lista um salto"
+      parameters:
+        - $ref: "#/components/parameters/salto_id"
+      responses:
+        "200":
+          description: "Um salto listado com sucesso"
+    put:
+      tags:
+        - Saltos
+      operationId: "saltos.update"
+      summary: "Atualiza saltos"
+      parameters:
+        - $ref: "#/components/parameters/salto_id"
+      responses:
+        "200":
+          description: "Salto atualizado com sucesso"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              x-body-name: "salto"
+              type: "object"
+              properties:
+                altura_salto:
+                  type: "number"
+                tempo_voo:
+                  type: "number"
+                forca_media:
+                  type: "number"
+                potencia_media:
+                  type: "number"
+                veloc_media:
+                  type: "number"
+                ativo:
+                  type: "boolean"
+    delete:
+      tags:
+        - Saltos
+      operationId: "saltos.delete"
+      summary: "Excluir salto"
+      parameters:
+        - $ref: "#/components/parameters/salto_id"
+      responses:
+        "204":
+          description: "Salto excluído com sucesso"
