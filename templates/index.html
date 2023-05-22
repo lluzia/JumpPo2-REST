@@ -7,17 +7,19 @@
 <body>
   <H1>Olá</H1>
     <div class="col-6 col-12">
-        {% if usuarios == []: %}
+        {% if todos_usuarios == []: %}
             <p>Não há usuários cadastrados</p>
         {% endif %}
-        <div class="table-wrapper">
-            {% for usuario in usuarios %}
-                <tr>
-                    {{usuario.nome}} {{usuario.sobrenome}}
-                </tr>
+        <div class="container">
+            <h3>Usuários</h3>
+            {% for usuario in todos_usuarios %}
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-info">
+                        {{usuario.nome}} {{usuario.sobrenome}}
+                    </li>
+                </ul>
             {% endfor %}
         </div>
-
     </div>
 </body>
 </html>
